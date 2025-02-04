@@ -38,6 +38,9 @@ func setupRouter(r *gin.Engine) {
 		}
 		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(md))
 	})
+	r.GET("/test", func(c *gin.Context) {
+		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(Convert()))
+	})
 }
 
 func start(srv *http.Server) {

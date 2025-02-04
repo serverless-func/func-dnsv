@@ -27,7 +27,8 @@ ARG USE_MIRROR
 RUN if [ "$USE_MIRROR" = "true" ]; then sed -i "s@https://dl-cdn.alpinelinux.org/@https://repo.huaweicloud.com/@g" /etc/apk/repositories; fi
 
 RUN apk update && \
-    apk add --no-cache tzdata
+    apk add --no-cache tzdata nodejs npm && \
+    npm install -g markmap-cli
 
 ENV TZ=Asia/Shanghai
 

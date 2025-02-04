@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"fmt"
+	"os/exec"
 	"text/template"
 )
 
@@ -37,4 +39,18 @@ func Render() (string, error) {
 		return "", err
 	}
 	return md.String(), nil
+}
+
+func Convert() string {
+	args := []string{
+		"-V",
+	}
+	cmd := exec.Command("markmap-cli", args...)
+
+	// 捕获命令输出（可选）
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Sprintf("命令执行失败: %v\n输出: %s", err, output)
+	}
+	return fmt.Sprintf("%s", output)
 }
