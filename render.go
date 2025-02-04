@@ -45,7 +45,7 @@ func Convert() string {
 	args := []string{
 		"-V",
 	}
-	cmd := exec.Command("markmap-cli", args...)
+	cmd := exec.Command("markmap", args...)
 
 	// 捕获命令输出（可选）
 	output, err := cmd.CombinedOutput()
