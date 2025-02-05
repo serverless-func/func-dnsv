@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	"fmt"
+	"os"
 	"os/exec"
 	"text/template"
 )
@@ -42,15 +42,32 @@ func Render() (string, error) {
 }
 
 func Convert() string {
-	args := []string{
-		"-V",
-	}
-	cmd := exec.Command("markmap", args...)
-
-	// 捕获命令输出（可选）
-	output, err := cmd.CombinedOutput()
+	mdContent, err := Render()
 	if err != nil {
-		return fmt.Sprintf("命令执行失败: %v\n输出: %s", err, output)
+		return err.Error()
 	}
-	return fmt.Sprintf("%s", output)
+	err = os.WriteFile("/tmp/index.md", []byte(mdContent), 0644)
+	if err != nil {
+		return err.Error()
+	}
+	cmd := exec.Command(
+		"markmap",
+		"--no-open",
+		"--no-toolbar",
+		"--output",
+		"/tmp/index.html",
+		"/tmp/index.md",
+	)
+
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		return stderr.String()
+	}
+	htmlContent, err := os.ReadFile("/tmp/index.html")
+	if err != nil {
+		return err.Error()
+	}
+	return string(htmlContent[:])
 }

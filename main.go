@@ -38,8 +38,32 @@ func setupRouter(r *gin.Engine) {
 		}
 		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(md))
 	})
-	r.GET("/test", func(c *gin.Context) {
-		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(Convert()))
+	r.GET("/index.html", func(c *gin.Context) {
+		resultChan := make(chan string)
+		go func() {
+			time.Sleep(3 * time.Second) // 模拟耗时任务
+			resultChan <- Convert()     // 发送处理结果
+		}()
+		// 立即返回 Loading 页面
+		c.Writer.Header().Set("Content-Type", "text/html; charset=utf-8")
+		c.Writer.WriteHeader(http.StatusOK)
+		c.Writer.Write([]byte("<html><body><h1 id='loading'>Loading...</h1>"))
+		c.Writer.(http.Flusher).Flush() // 立即发送响应
+
+		// 等待异步任务完成并获取结果
+		result := <-resultChan
+
+		// 清空loading
+		c.Writer.Write([]byte(`
+			<script>
+				document.getElementById("loading").remove();
+			</script>
+			</body></html>`))
+		c.Writer.(http.Flusher).Flush()
+
+		// 返回最终 HTML
+		c.Writer.Write([]byte(result))
+		c.Writer.(http.Flusher).Flush()
 	})
 }
 
