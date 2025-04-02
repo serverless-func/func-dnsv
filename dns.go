@@ -2,11 +2,12 @@
 package main
 
 import (
+	"os"
+
 	alidns20150109 "github.com/alibabacloud-go/alidns-20150109/v4/client"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	util "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/tea"
-	"os"
 )
 
 type Record struct {
@@ -54,6 +55,9 @@ func DomainGroupWithRecords(domain string) []RecordGroup {
 		}
 		var rs []Record
 		for _, r := range grs {
+			if r.Remark == nil {
+				continue
+			}
 			rs = append(rs, Record{
 				Name:   "`" + *r.RR + "`",
 				Remark: *r.Remark,
