@@ -31,7 +31,10 @@ func setupRouter(r *gin.Engine) {
 		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte("pong"))
 	})
 	r.GET("/index.md", func(c *gin.Context) {
-		md, err := Render()
+		w := func(text string) {
+			log.Println(text)
+		}
+		md, err := Render(w)
 		if err != nil {
 			c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(err.Error()))
 			return
@@ -39,15 +42,20 @@ func setupRouter(r *gin.Engine) {
 		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(md))
 	})
 	r.GET("/index.html", func(c *gin.Context) {
+		w := func(text string) {
+			c.Writer.Write([]byte(fmt.Sprintf("%s <br>", text)))
+			c.Writer.(http.Flusher).Flush()
+		}
 		resultChan := make(chan string)
 		go func() {
 			time.Sleep(3 * time.Second) // 模拟耗时任务
-			resultChan <- Convert()     // 发送处理结果
+			resultChan <- Convert(w)    // 发送处理结果
 		}()
 		// 立即返回 Loading 页面
 		c.Writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 		c.Writer.WriteHeader(http.StatusOK)
-		c.Writer.Write([]byte("<html><body><h1 id='loading'>Loading...</h1>"))
+		c.Writer.Write([]byte("<html><body><div id='loading'>"))
+		c.Writer.Write([]byte("loading ... <br>"))
 		c.Writer.(http.Flusher).Flush() // 立即发送响应
 
 		// 等待异步任务完成并获取结果
@@ -55,6 +63,7 @@ func setupRouter(r *gin.Engine) {
 
 		// 清空loading
 		c.Writer.Write([]byte(`
+			</div>
 			<script>
 				document.getElementById("loading").remove();
 			</script>
