@@ -7,7 +7,7 @@ require (
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.10
 	github.com/alibabacloud-go/tea v1.3.10
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.7
-	github.com/gin-gonic/gin v1.10.0
+	github.com/gin-gonic/gin v1.10.1
 )
 
 require (
