@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"os/exec"
+	"strings"
 	"text/template"
 )
 
@@ -76,5 +77,5 @@ func Convert(w func(text string)) string {
 	if err != nil {
 		return err.Error()
 	}
-	return string(htmlContent[:])
+	return strings.ReplaceAll(string(htmlContent[:]), "<title>Markmap</title>", "<title>DNS View</title>")
 }

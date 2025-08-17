@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	alidns20150109 "github.com/alibabacloud-go/alidns-20150109/v4/client"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
@@ -57,7 +58,7 @@ func DomainGroupWithRecords(domain string, w func(text string)) []RecordGroup {
 		}
 		var rs []Record
 		for _, r := range grs {
-			if r.Remark == nil {
+			if r.Remark == nil || strings.HasPrefix(*r.RR, "_") {
 				continue
 			}
 			rs = append(rs, Record{
