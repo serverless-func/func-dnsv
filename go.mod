@@ -3,7 +3,7 @@ module github.com/serverless-aliyun/fun-dnsv
 go 1.23.0
 
 require (
-	github.com/alibabacloud-go/alidns-20150109/v4 v4.5.11
+	github.com/alibabacloud-go/alidns-20150109/v4 v4.6.0
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.11
 	github.com/alibabacloud-go/tea v1.3.11
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.7
