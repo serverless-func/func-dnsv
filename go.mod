@@ -6,7 +6,7 @@ require (
 	github.com/alibabacloud-go/alidns-20150109/v4 v4.7.0
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.13
 	github.com/alibabacloud-go/tea v1.3.14
-	github.com/alibabacloud-go/tea-utils/v2 v2.0.8
+	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/gin-gonic/gin v1.11.0
 )
 
