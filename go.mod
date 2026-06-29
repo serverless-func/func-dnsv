@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/alibabacloud-go/alidns-20150109/v4 v4.7.0
-	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.1
+	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.2
 	github.com/alibabacloud-go/tea v1.5.1
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/gin-gonic/gin v1.12.0
